@@ -12,7 +12,7 @@ class Products extends Component {
         { id: 6, first_name: 'mt6', last_name: 'md6', username: "mu6" },
     ];
 
-    // x: any = [];
+    id: any;
 
     constructor() {
             super();
@@ -20,7 +20,7 @@ class Products extends Component {
             this.render();
             this.getProducts();
             this.deleteProducts();
-            // this.editProducts();
+            this.editProducts();
         }
         // getProducts = async () => await (await fetch('https://fakestoreapi.com/products')).json();
 
@@ -47,8 +47,27 @@ class Products extends Component {
                         <td>${this.products[i].username}</td>
                         <td>
                             <span>
-                                <a href="#" id="delete" class="delete text-danger" data-type="delete" data-id="${this.products[i].id}">delete</a>
-                                <a href="#" id="edit" class="edit text-primary" data-type="edit" data-id="${this.products[i].id}">edit</a>
+
+                                <a 
+                                    href="#" 
+                                    id="delete" 
+                                    class="delete text-danger" 
+                                    data-type="delete" 
+                                    data-id="${this.products[i].id}"
+                                >
+                                    delete
+                                </a>
+
+                                <a 
+                                    href="#" 
+                                    id="edit" 
+                                    class="edit text-primary" 
+                                    data-type="edit" 
+                                    data-id="${this.products[i].id}"
+                                >
+                                    edit
+                                </a>
+                                
                             </span>
                         </td>
                     </tr>
@@ -64,32 +83,43 @@ class Products extends Component {
         // })
     }
 
+    // اینجا با یک رویداد میتوان به دام دسترسی داشت
+    // و آی دی المن مورد نظر را چک کرد 
+    // البته ابتدا باید همه المنتهارا گرفت و با یک شرط چک کرد
     deleteProducts = () => {
         this.shadowRoot.addEventListener("click", (e: Event) => {
             e.preventDefault();
-            this.shadowRoot.getElementById("delete").addEventListener("click", (e: Event) => {
-                e.preventDefault();
-                const target = e.target as Element;
-                const selector = target.getAttribute('data-id');
+            const target = e.target as Element;
+            const dataId = target.getAttribute('data-id');
+            const dataType = target.getAttribute('data-type');
+            if(dataType === 'delete') {
                 const deleteIdes = this.shadowRoot.querySelectorAll(".table tbody tr td span a#delete");
                 for(let i=0; i<deleteIdes.length; i++){
-                    if(deleteIdes[i].attributes["data-id"].value === selector){
-                        console.log(selector)
+                    if(deleteIdes[i].attributes["data-id"].value === dataId) {
+                        this.id = dataId;
+                        break;
                     }
                 }
-            });
+            }
         });
     }
 
+    // اینجا با یک رویداد میتوان به دام دسترسی داشت
+    // و آی دی المن مورد نظر را چک کرد 
+    // البته ابتدا باید همه المنتهارا گرفت و با یک شرط چک کرد
     editProducts = () => {
         this.shadowRoot.addEventListener("click", (e: Event) => {
             e.preventDefault();
             const target = e.target as Element
-            const selector = target.getAttribute('data-id');
-            const deleteIdes = this.shadowRoot.querySelectorAll(".table tbody tr td span a#edit");
-            for(let i=0; i<deleteIdes.length; i++){
-                if(deleteIdes[i].attributes["data-id"].value === selector){
-                    console.log(selector)
+            const dataId = target.getAttribute('data-id');
+            const dataType = target.getAttribute('data-type');
+            if(dataType === 'edit') {
+                const editIdes = this.shadowRoot.querySelectorAll(".table tbody tr td span a#edit");
+                for(let i=0; i<editIdes.length; i++){
+                    if(editIdes[i].attributes["data-id"].value === dataId) {
+                        this.id = dataId;
+                        break;
+                    }
                 }
             }
         })
@@ -133,10 +163,10 @@ class Products extends Component {
     }
 
     connectedCallback = () => {
-        this.shadowRoot.addEventListener("click", (e: Event) => {
-            e.preventDefault();
-            this.deleteProducts();
-        });
+        // this.shadowRoot.addEventListener("click", (e: Event) => {
+        //     e.preventDefault();
+        //     this.deleteProducts(e);
+        // });
     }
 
     disconnectedCallback() {}

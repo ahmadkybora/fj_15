@@ -4,6 +4,14 @@ class Component extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({ mode: "open" });
+
+        // var a = document.querySelector("a");
+        // var Func = function(){}
+        // var obj = new Func();
+        // a.setAttribute("onClick", `${obj}`);
+        // a.onclick = function() {};
+
+        // console.log(a);
     }
     // connectedCallback = () => {}
 
